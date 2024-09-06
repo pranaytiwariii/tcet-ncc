@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "/Navbar/logo.png";
-import { useState , userEffect } from "react";
+import { useState , useEffect } from "react";
 import menu from "/Navbar/menu1.svg";
 import close1 from "/Navbar/close1 (2).svg";
 import up from "/Navbar/up.png";
@@ -23,6 +23,22 @@ const navLink = [
 export default function Nav() {
   const [toggle, setToggle] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  useEffect(() => {
+    const handleScroll = () => {
+      const hero = document.getElementById('hero');
+      const navbar = document.getElementById('navbar');
+      const heroBottom = hero.getBoundingClientRect().bottom;
+
+      if (window.scrollY > heroBottom) {
+        navbar.classList.add('bg-white');
+      } else {
+        navbar.classList.remove('bg-white');
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
 
   const handleClick = () => setToggle((prevToggle) => !prevToggle);
@@ -38,14 +54,14 @@ export default function Nav() {
   const handleNav2 = () => setnavClick2((prevNavClick2) => !prevNavClick2);
 
   return (
-    <>
-      <div className={`font-sans z-50 sm:px-32 py-5 ${
-          isScrolled ? "bg-black" : "fixed w-full bg-white"
+    <div className=" z-30">
+      <div id="navbar" className={`font-sans z-50 sm:px-32 py-3 ${
+          isScrolled ? "bg-black" : "fixed w-full"
         }`}>
         <div className="z-30 pb-0 sm:px-6 ">
           <div className="flex items-center justify-between h-16 px-2 ">
             {/* Logo */}
-            <div className="pb-5">
+            <div className="">
               <img src={logo} alt="" className="h-24 pt-4" />
             </div>
             {/* Navlinks */}
@@ -242,6 +258,6 @@ export default function Nav() {
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
